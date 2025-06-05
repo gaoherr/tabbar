@@ -10,7 +10,7 @@
 
     "author": "1311793927@qq.com",
     'support': '1311793927qq.com',
-
+	'images': ['static/description/main_banner.png'],
     'category': 'General',
     'version': '0.1',
      "license": "LGPL-3",
