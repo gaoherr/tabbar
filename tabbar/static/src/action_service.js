@@ -37,6 +37,7 @@ import { isHtmlEmpty } from '@web/core/utils/html';
 import { omit, pick, shallowEqual } from '@web/core/utils/objects';
 import { session } from '@web/session';
 import { exprToBoolean } from '@web/core/utils/strings';
+import { clearUncommittedChanges, standardActionServiceProps, ControllerNotFoundError, InvalidButtonParamsError } from '@web/webclient/actions/action_service';
 
 class BlankComponent extends Component {
   static props = ['onMounted', 'withControlPanel', '*'];
@@ -57,44 +58,8 @@ class BlankComponent extends Component {
 const actionHandlersRegistry = registry.category('action_handlers');
 const actionRegistry = registry.category('actions');
 
-/** @typedef {number|false} ActionId */
-/** @typedef {Object} ActionDescription */
-/** @typedef {"current" | "fullscreen" | "new" | "main" | "self" | "inline"} ActionMode */
-/** @typedef {string} ActionTag */
-/** @typedef {string} ActionXMLId */
-/** @typedef {Object} Context */
-/** @typedef {Function} CallableFunction */
-/** @typedef {string} ViewType */
 
-/** @typedef {ActionId|ActionXMLId|ActionTag|ActionDescription} ActionRequest */
 
-/**
- * @typedef {Object} ActionOptions
- * @property {Context} [additionalContext]
- * @property {boolean} [clearBreadcrumbs]
- * @property {CallableFunction} [onClose]
- * @property {Object} [props]
- * @property {ViewType} [viewType]
- * @property {"replaceCurrentAction" | "replacePreviousAction"} [stackPosition]
- * @property {number} [index]
- */
-
-export async function clearUncommittedChanges(env) {
-  const callbacks = [];
-  env.bus.trigger('CLEAR-UNCOMMITTED-CHANGES', callbacks);
-  const res = await Promise.all(callbacks.map((fn) => fn()));
-  return !res.includes(false);
-}
-
-export const standardActionServiceProps = {
-  action: Object, // prop added by _getActionInfo
-  actionId: { type: Number, optional: true }, // prop added by _getActionInfo
-  className: { type: String, optional: true }, // prop added by the ActionContainer
-  globalState: { type: Object, optional: true }, // prop added by _updateUI
-  state: { type: Object, optional: true }, // prop added by _updateUI
-  resId: { type: [Number, Boolean], optional: true },
-  updateActionState: { type: Function, optional: true },
-};
 
 function parseActiveIds(ids) {
   const activeIds = [];
@@ -113,19 +78,8 @@ const DIALOG_SIZES = {
   small: 'sm',
 };
 
-// -----------------------------------------------------------------------------
-// Errors
-// -----------------------------------------------------------------------------
 
-export class ControllerNotFoundError extends Error { }
 
-export class InvalidButtonParamsError extends Error { }
-
-// -----------------------------------------------------------------------------
-// ActionManager (Service)
-// -----------------------------------------------------------------------------
-
-// regex that matches context keys not to forward from an action to another
 const CTX_KEY_REGEX =
   /^(?:(?:default_|search_default_|show_).+|.+_view_ref|group_by|active_id|active_ids|orderedBy)$/;
 // keys added to the context for the embedded actions feature
@@ -1356,6 +1310,7 @@ export function makeActionManager(env, router = _router) {
    * @param {ActionOptions} options
    */
   async function _executeClientAction(action, options) {
+    debugger
     const clientAction = actionRegistry.get(action.tag);
     action.path ||= clientAction.path;
     if (clientAction.prototype instanceof Component) {
@@ -1975,5 +1930,5 @@ export const actionService = {
     return makeActionManager(env);
   },
 };
-
+registry.category('services').remove('action');
 registry.category('services').add('action', actionService);
