@@ -19,7 +19,6 @@
     "auto_install": False,
     "assets": {
         "web.assets_backend": [
-            ('remove', 'web/static/src/webclient/actions/action_service.js'),
            "tabbar/static/src/**/*",
         ],
     },
