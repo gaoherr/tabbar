@@ -1,0 +1,189 @@
+// 美化标签页样式 - 统一大小，优化间距
+.simple_tabbar_container {
+    position: relative;
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 100;
+}
+
+.simple_tabbar {
+    display: flex;
+    align-items: center;
+    padding: 0 8px; // 从15px减少到8px，减少左右边距
+    min-height: 35px;
+    background: #f8f9fa;
+}
+
+.tabbar_tabs {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    gap: 1px; // 从2px减少到1px，让间距更紧凑
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+    
+    &::-webkit-scrollbar {
+        display: none; // Chrome/Safari
+    }
+}
+
+.tabbar_tab {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    background: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    // 统一标签页大小
+    min-width: 120px; // 设置最小宽度
+    max-width: 160px; // 减少最大宽度，让标签页更统一
+    width: 140px; // 设置固定宽度，让所有标签页大小一致
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0; // 防止在空间不足时被压缩
+    
+    &:hover {
+        background: #e2e6ea;
+        border-color: #adb5bd;
+        transform: translateY(-1px); // 添加轻微的悬停效果
+    }
+    
+    &.active {
+        background: white;
+        border-bottom-color: white;
+        font-weight: 500;
+        box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+        
+        .tab_title {
+            color: #495057;
+        }
+    }
+}
+
+.tab_title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 8px;
+    color: #6c757d;
+    font-weight: 400;
+    text-align: left;
+}
+
+.tab_close_btn {
+    background: none;
+    border: none;
+    padding: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    color: #999;
+    transition: all 0.2s ease;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    &:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+    }
+}
+
+.tabbar_actions {
+    margin-left: 8px; // 从10px减少到8px
+    display: flex;
+    gap: 3px; // 从4px减少到3px
+    flex-shrink: 0;
+    
+    button {
+        padding: 4px 8px;
+        font-size: 11px;
+        line-height: 1;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-1px);
+        }
+    }
+}
+
+// 美化滚动条
+.tabbar_tabs {
+    &::-webkit-scrollbar {
+        height: 2px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #dee2e6;
+        border-radius: 2px;
+        
+        &:hover {
+            background: #adb5bd;
+        }
+    }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .simple_tabbar {
+        min-height: 32px;
+        padding: 0 6px;
+    }
+    
+    .tabbar_tab {
+        min-width: 100px;
+        max-width: 120px;
+        width: 110px; // 移动端更小的固定宽度
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    .tabbar_actions {
+        margin-left: 6px;
+        gap: 2px;
+        
+        button {
+            padding: 3px 6px;
+            font-size: 10px;
+        }
+    }
+    
+    .tab_close_btn {
+        width: 16px;
+        height: 16px;
+        font-size: 11px;
+    }
+}
+
+// 平滑动画
+.simple_tabbar_container {
+    transition: all 0.3s ease;
+}
+
+.tabbar_tab {
+    &:first-child {
+        margin-left: 0; // 确保第一个标签页没有额外边距
+    }
+    
+    &:last-child {
+        margin-right: 0; // 确保最后一个标签页没有额外边距
+    }
+} 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="tabbar.SimpleTabbar" owl="1">
+        <div class="simple_tabbar_container" t-if="state.visible">
+            <div class="simple_tabbar">
+                
+                <!-- 标签页列表 -->
+                <div class="tabbar_tabs">
+                    <div t-foreach="state.tabs" 
+                         t-as="tab"
+                         t-key="tab.id"
+                         class="tabbar_tab"
+                         t-att-class="{ 'active': tab.id === state.activeTabId }"
+                         t-on-click="() => this.onTabClick(tab)">
+                        
+                        <span class="tab_title" t-esc="tab.title"/>
+                        
+                        <button class="tab_close_btn" 
+                                t-on-click.stop="(ev) => this.onTabClose(tab, ev)"
+                                title="关闭标签页">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 简化的操作按钮 -->
+                <div class="tabbar_actions">
+                    <button class="btn btn-sm btn-outline-secondary" 
+                            t-on-click="() => this.onCloseOtherTabs(state.tabs.find(t => t.id === state.activeTabId))"
+                            title="关闭其他标签页">
+                        ⊟
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" 
+                            t-on-click="() => this.onCloseAllTabs()"
+                            title="关闭所有标签页">
+                        ✕✕
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </t>
+
+</templates> 

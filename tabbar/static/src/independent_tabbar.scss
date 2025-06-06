@@ -1,0 +1,163 @@
+// 独立标签页样式
+.independent_tabbar_container {
+    position: fixed;
+    top: 60px; // 在导航栏下方
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.independent_tabbar {
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    min-height: 45px;
+    background: #f8f9fa;
+}
+
+.tabbar_tabs {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+    
+    &::-webkit-scrollbar {
+        display: none; // Chrome/Safari
+    }
+}
+
+.tabbar_tab {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px 8px 16px;
+    margin-right: 2px;
+    background: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    max-width: 200px;
+    position: relative;
+    
+    &:hover {
+        background: #e2e6ea;
+        border-color: #adb5bd;
+    }
+    
+    &.active {
+        background: white;
+        border-bottom: 1px solid white;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        
+        .tab_title {
+            font-weight: 500;
+            color: #495057;
+        }
+    }
+}
+
+.tab_title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #6c757d;
+    margin-right: 8px;
+}
+
+.tab_close_btn {
+    background: none;
+    border: none;
+    padding: 2px;
+    border-radius: 3px;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    
+    &:hover {
+        background: #dc3545;
+        color: white;
+    }
+    
+    svg {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+.tabbar_menu {
+    margin-left: 10px;
+    
+    .dropdown-toggle {
+        border: none;
+        background: transparent;
+        color: #6c757d;
+        padding: 6px;
+        
+        &:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        &::after {
+            display: none; // 隐藏默认的下拉箭头
+        }
+    }
+}
+
+// 调整主内容区域，为标签页让出空间
+.o_action_manager {
+    margin-top: 45px !important;
+}
+
+// 当只有一个标签页时，不显示标签栏，也不调整主内容区域
+.independent_tabbar_container:not(:has(.tabbar_tab ~ .tabbar_tab)) + * .o_action_manager {
+    margin-top: 0 !important;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .independent_tabbar_container {
+        top: 50px; // 移动端可能有不同的导航栏高度
+    }
+    
+    .tabbar_tab {
+        min-width: 100px;
+        max-width: 150px;
+    }
+    
+    .tab_title {
+        font-size: 12px;
+    }
+}
+
+// 美化滚动条（对于支持的浏览器）
+.tabbar_tabs {
+    &::-webkit-scrollbar {
+        height: 3px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #dee2e6;
+        border-radius: 3px;
+        
+        &:hover {
+            background: #adb5bd;
+        }
+    }
+} 
