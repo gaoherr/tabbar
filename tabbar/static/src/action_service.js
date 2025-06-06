@@ -1316,7 +1316,6 @@ export function makeActionManager(env, router = _router) {
    * @param {ActionOptions} options
    */
   async function _executeClientAction(action, options) {
-    debugger
     const clientAction = actionRegistry.get(action.tag);
     action.path ||= clientAction.path;
     if (clientAction.prototype instanceof Component) {

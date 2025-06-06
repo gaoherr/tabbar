@@ -73,6 +73,36 @@ patch(ActionContainer.prototype, {
         browser.history.pushState({}, "", url);
         this.render();
     },
+    _close_other_action() {
+        this.action_infos = this.action_infos.filter((info) => {
+            if (info.active == false) {
+                delete this.controllerStacks[info.key];
+            }
+            return info.active == true
+        });
+
+        this.render();
+    },
+    _close_current_action() {
+        debugger
+        this.action_infos = this.action_infos.filter((info) => {
+            if (info.active == true) {
+                delete this.controllerStacks[info.key];
+            }
+            return info.active == false
+        });
+        this.action_infos[this.action_infos.length - 1].active = true;
+        this.render();
+    },
+    _on_close_all_action() {
+        debugger
+        this.action_infos.forEach((info) => {
+            delete this.controllerStacks[info.key];
+        });
+        this.action_infos = {}
+        window.location.href = "/";
+
+    }
 });
 ActionContainer.components = {
     ...ActionContainer.components,
@@ -86,7 +116,8 @@ ActionContainer.template = xml`
                 action_infos="action_infos"
                 active_action="(action_info) => this._on_active_action(action_info)"
                 close_action="(action_info) => this._on_close_action(action_info)"
-                close_other_action="(action_info) => this._close_other_action(action_info)"
+                close_current_action="() => this._close_current_action()"
+                close_other_action="() => this._close_other_action()"
                 close_all_action="() => this._on_close_all_action()"
             />
             <div t-foreach="action_infos" t-as="action_info" t-if="action_info" t-key="action_info.key" class="akl_controller_container d-flex flex-column" t-att-class="action_info.active ? '' : 'd-none'" >
