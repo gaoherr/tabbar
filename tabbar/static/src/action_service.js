@@ -95,6 +95,7 @@ const ControllerComponentTemplate = xml`<t t-component="Component" t-props="comp
 
 export function makeActionManager(env, router = _router) {
   const breadcrumbCache = {};
+  // ! my edit
   const controllerStacks = {};
   let count = 0
   const keepLast = new KeepLast();
@@ -849,6 +850,7 @@ export function makeActionManager(env, router = _router) {
 
     const nextStack = [...controllerStack.slice(0, index), controller,];
     if (controller.action.target != 'new') {
+      // ! my edit
       count = count + 1
       controller.count = count;
       controllerStacks[nextStack[0].displayName] = nextStack;
@@ -981,6 +983,7 @@ export function makeActionManager(env, router = _router) {
             // so go back to the last non faulty controller
             // (the error will be shown anyway as the promise
             // has been rejected)
+            // ! my edit
             delete controllerStacks[controller.displayName];
 
             return restore(lastController.jsId);
@@ -1018,7 +1021,8 @@ export function makeActionManager(env, router = _router) {
           };
 
           controllerStack = nextStack; // the controller is mounted, commit the new stack
-          // gx_bugger
+          // todo del
+          window.router = router
           window.controllerStack = controllerStack;
           window.controllerStacks = controllerStacks;
           pushState();

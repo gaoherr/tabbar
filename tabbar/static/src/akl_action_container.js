@@ -3,9 +3,11 @@ import { patch } from '@web/core/utils/patch';
 import { AklMultiTab } from './components/multi_tab/akl_multi_tab';
 
 import { xml, useState } from '@odoo/owl';
-
+import { browser } from '@web/core/browser/browser';
 import { useService } from '@web/core/utils/hooks';
-
+import {
+    router as _router,
+} from '@web/core/browser/router';
 patch(ActionContainer.prototype, {
     setup() {
 
@@ -48,17 +50,13 @@ patch(ActionContainer.prototype, {
 
         return action_infos;
     },
-    _on_active_action(action_info) {
-        this.action_infos.forEach((info) => {
-            info.active = info.key === action_info.key;
-        });
-        this.render();
-    },
+
     _on_close_action(action_info) {
         this.action_infos = this.action_infos.filter((info) => {
             return info.key !== action_info.key;
         });
         if (this.action_infos.length > 0) {
+
             delete this.controllerStacks[action_info.key];
             this.action_infos[this.action_infos.length - 1].active = true; // Set last 
             this.render();
@@ -71,6 +69,8 @@ patch(ActionContainer.prototype, {
         this.action_infos.forEach((info) => {
             info.active = info.key === action_info.key;
         });
+        const url = _router.stateToUrl(action_info.__info__.state)
+        browser.history.pushState({}, "", url);
         this.render();
     },
 });
