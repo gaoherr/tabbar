@@ -981,6 +981,8 @@ export function makeActionManager(env, router = _router) {
             // so go back to the last non faulty controller
             // (the error will be shown anyway as the promise
             // has been rejected)
+            delete controllerStacks[controller.displayName];
+
             return restore(lastController.jsId);
           }
         } else {

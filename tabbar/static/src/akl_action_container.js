@@ -8,6 +8,7 @@ import { useService } from '@web/core/utils/hooks';
 
 patch(ActionContainer.prototype, {
     setup() {
+
         super.setup();
         this.action_infos = [];
         this.controllerStacks = {};
@@ -16,6 +17,7 @@ patch(ActionContainer.prototype, {
         this.env.bus.addEventListener(
             'ACTION_MANAGER:UPDATE',
             ({ detail: info }) => {
+                debugger
                 this.action_infos = this.get_controllers(info);
                 this.controllerStacks = info.controllerStacks;
                 this.render();
